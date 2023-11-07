@@ -24,20 +24,29 @@ const SPEED = 340;
 
 const k = kaboom();
 
-k.loadSprite("bean", "sprites/bean.png");
+k.loadSprite("char", "sprites/dino_char.png");
+
+k.loadSprite("char_run_1", "sprites/dino_char - run_frame_1.png")
+k.loadSprite("char_run_2", "sprites/dino_char - run_frame_2.png")
+k.loadSprite("char_run_3", "sprites/dino_char - run_frame_3.png")
+k.loadSprite("char_run_4", "sprites/dino_char - run_frame_4.png")
+
+const run_frames = ["char_run_1", "char_run_2", "char_run_3", "char_run_4", "char_run_3", "char_run_2"]
+var i = 0
 
 k.setGravity(1600);
 
 
 k.scene("gameloop", () => { //gameloop starts here
 
-const char = k.add([
+var char = k.add([
 	k.pos(80, 40),
-	k.sprite("bean"),
+	k.sprite("char"),
 	k.area(),
 	k.body(),
+	k.scale()
 ])
-
+char.scaleTo(3);
 k.add([
 	k.rect(width(), 48),
 	k.pos(0, height() - 48),
@@ -60,6 +69,12 @@ k.onKeyDown("a", () => {
 	char.move(-SPEED,0);
 });
 
+k.loop(0.2, () => {
+
+	if(i===5) i=0;
+	else i+=1;
+	char.use(sprite(run_frames[i]));
+})
 
 k.loop(looptime, () => {
 	spawnObj();
@@ -67,7 +82,7 @@ k.loop(looptime, () => {
 })
 
 char.onCollide("object", () => {
-	k.shake();
+	//k.shake();
 	//go("dead"); <<< MAKE A DEATH SCENE
 })
 
